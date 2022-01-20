@@ -55,10 +55,12 @@ public class TeleportRay : MonoBehaviour
         
         if(lStick.triggered || rStick.triggered) return;
 
-        var lHitFail = !lRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit lhit);
-        var rHitFail = !rRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit rhit);
+        //var lHitFail = !lRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit lhit);
+        var lHitFail = !lRayInteractor.TryGetHitInfo(out Vector3 lhitPos, out Vector3 lhitNorm, out int lhitLinePos, out bool lhitValid);
+        //var rHitFail = !rRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit rhit);
+        var rHitFail = !rRayInteractor.TryGetHitInfo(out Vector3 rhitPos, out Vector3 rhitNorm, out int rhitLinePos, out bool rhitValid);
 
-        if(lHitFail && rHitFail)
+        if((lHitFail && rHitFail) || (!lhitValid && !rhitValid))
         {
             lRayInteractor.enabled = false;
             rRayInteractor.enabled = false;
@@ -72,7 +74,7 @@ public class TeleportRay : MonoBehaviour
         {   
             TeleportRequest lrequest = new TeleportRequest()
             {
-                destinationPosition = lhit.point,
+                destinationPosition = lhitPos,
             };
             provider.QueueTeleportRequest(lrequest);
             rRayInteractor.enabled = false;
@@ -85,7 +87,7 @@ public class TeleportRay : MonoBehaviour
         
         TeleportRequest rrequest = new TeleportRequest()
         {
-            destinationPosition = rhit.point,
+            destinationPosition = rhitPos,
         };
         provider.QueueTeleportRequest(rrequest);
         lRayInteractor.enabled = false;
