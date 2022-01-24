@@ -53,7 +53,7 @@ public class TeleportRay : MonoBehaviour
     {
         if(!lactive && !ractive) return;
         
-        if(lStick.triggered || rStick.triggered) return;
+        if(lStick.ReadValue<Vector2>() != Vector2.zero || rStick.ReadValue<Vector2>() != Vector2.zero) return;
 
         //var lHitFail = !lRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit lhit);
         var lHitFail = !lRayInteractor.TryGetHitInfo(out Vector3 lhitPos, out Vector3 lhitNorm, out int lhitLinePos, out bool lhitValid);
