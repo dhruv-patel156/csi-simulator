@@ -15,7 +15,6 @@ public class TeleportRay : MonoBehaviour
     public GameObject reticle;
     private InputAction lStick;
     private InputAction rStick;
-
     private bool lactive;
     private bool ractive;
 

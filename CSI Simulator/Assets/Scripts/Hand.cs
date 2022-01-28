@@ -7,6 +7,7 @@ public class Hand : MonoBehaviour
 {
 
     Animator animator;
+    SkinnedMeshRenderer mesh;
     private float gripTarget;
     private float gripCurrent;
     private float pointTarget;
@@ -17,6 +18,7 @@ public class Hand : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+        mesh = GetComponentInChildren<SkinnedMeshRenderer>();
     }
 
     // Update is called once per frame
@@ -46,5 +48,10 @@ public class Hand : MonoBehaviour
             pointCurrent = Mathf.MoveTowards(pointCurrent, pointTarget, Time.deltaTime * speed);
             animator.SetFloat("Point", pointCurrent);
         }
+    }
+
+    public void ToggleHand()
+    {
+        mesh.enabled = !mesh.enabled;
     }
 }
