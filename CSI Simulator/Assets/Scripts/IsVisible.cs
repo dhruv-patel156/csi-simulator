@@ -2,12 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cameraCollider : MonoBehaviour
+public class IsVisible : MonoBehaviour
 {
-
-    public Transform head;
-    public Transform feet;    
-
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +13,14 @@ public class cameraCollider : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        gameObject.transform.position = new Vector3 (head.position.x, feet.position.y, head.position.z);
+        
+    }
+
+    public bool CheckVisible() {
+        Renderer objRenderer = GetComponent<Renderer>();
+        if (objRenderer.isVisible)
+            return true;
+        else
+            return false;
     }
 }
