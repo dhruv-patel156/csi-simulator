@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - PhotoEvidence
+  - EvidenceBag
+  - Evidence
+  - PhysicalEvidence
+  - SwabEvidence
+  - Swab
   layers:
   - Default
   - TransparentFX

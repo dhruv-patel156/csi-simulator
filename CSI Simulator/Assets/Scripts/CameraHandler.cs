@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class CameraHandler : MonoBehaviour
 {
@@ -11,7 +12,9 @@ public class CameraHandler : MonoBehaviour
 
     void Start() {
         photoCount = 0;
-        GameObject[] targets = GameObject.FindGameObjectsWithTag("PhotoEvidence");
+        GameObject[] photoEvidence = GameObject.FindGameObjectsWithTag("PhotoEvidence");
+        GameObject[] evidence = GameObject.FindGameObjectsWithTag("Evidence");
+        GameObject[] targets = photoEvidence.Concat(evidence).ToArray();
         photoTargets = new List<GameObject>(targets);
     }
 
@@ -64,6 +67,8 @@ public class CameraHandler : MonoBehaviour
                 photoTargets.Remove(currentTarget);
                 if (photoTargets.Count == 0) {
                     Debug.Log("All Photos taken");
+                    GameObject.Find("XR Origin/Toolbelt/Pouch").SetActive(true);
+                    GameObject.Find("XR Origin/Toolbelt/SwabPouch").SetActive(true);
                 }
             }
         }
