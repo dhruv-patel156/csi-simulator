@@ -7,24 +7,29 @@ public class CameraHandler : MonoBehaviour
 {
     private Camera myCamera;
     private bool takeScreenshot;
-    private int photoCount;
+    //private int photoCount;
     private List<GameObject> photoTargets;
-
-    void Start() {
-        photoCount = 0;
+    public GameObject pouch;
+    public GameObject swabPouch;
+    
+    void Start()
+    {
+        //photoCount = 0;
         GameObject[] photoEvidence = GameObject.FindGameObjectsWithTag("PhotoEvidence");
         GameObject[] evidence = GameObject.FindGameObjectsWithTag("Evidence");
         GameObject[] targets = photoEvidence.Concat(evidence).ToArray();
         photoTargets = new List<GameObject>(targets);
     }
 
-    private void Awake() {
+    void Awake() {
         myCamera = gameObject.GetComponent<Camera>();
     }
 
-    private void OnPostRender() {
+    void OnPostRender() {
         if (takeScreenshot) {
             takeScreenshot = false;
+            
+            /*
             RenderTexture renderTexture = myCamera.targetTexture;
 
             Texture2D renderResult = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.ARGB32, false);
@@ -34,7 +39,8 @@ public class CameraHandler : MonoBehaviour
             byte[] byteArray = renderResult.EncodeToPNG();
             System.IO.File.WriteAllBytes(Application.dataPath + "/Photos/Photo" + photoCount + ".png", byteArray);
             photoCount += 1;
-
+            */
+            
             GameObject currentTarget = null;
             float currentDistance = 2000f;
 
@@ -67,8 +73,8 @@ public class CameraHandler : MonoBehaviour
                 photoTargets.Remove(currentTarget);
                 if (photoTargets.Count == 0) {
                     Debug.Log("All Photos taken");
-                    GameObject.Find("XR Origin/Toolbelt/Pouch").SetActive(true);
-                    GameObject.Find("XR Origin/Toolbelt/SwabPouch").SetActive(true);
+                    pouch.SetActive(true);
+                    swabPouch.SetActive(true);
                 }
             }
         }

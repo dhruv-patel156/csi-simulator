@@ -6,6 +6,8 @@ using System.Linq;
 public class EvidenceBox : MonoBehaviour
 {
     private List<GameObject> boxTargets;
+    public GameObject brush;
+    public GameObject brushSocket;
 
     void Start()
     {
@@ -26,6 +28,9 @@ public class EvidenceBox : MonoBehaviour
                 collidingObject.gameObject.SetActive(false);
                 if (boxTargets.Count == 0) {
                     Debug.Log("All evidence stored!");
+                    brush.SetActive(true);
+                    brushSocket.SetActive(true);
+                    brush.transform.position = brushSocket.transform.position;
                 }
             }
         }
