@@ -10,6 +10,8 @@ TagManager:
   - PhysicalEvidence
   - SwabEvidence
   - Swab
+  - Surface
+  - Fingerprint
   layers:
   - Default
   - TransparentFX
@@ -18,7 +20,7 @@ TagManager:
   - Water
   - UI
   - Camera Colliders
-  - 
+  - Brush
   - 
   - 
   - 

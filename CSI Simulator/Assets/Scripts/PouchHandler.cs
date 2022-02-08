@@ -27,13 +27,13 @@ public class PouchHandler : MonoBehaviour
         GameObject copy;
         if (leftHand.IsSelecting(pouchInteractor)) {
             copy = Instantiate(original, leftHand.transform.position, leftHand.transform.rotation);
-            interactionManager.SelectExit(leftHand, pouchInteractor);
-            interactionManager.SelectEnter(leftHand, copy.GetComponent<XRGrabInteractable>());
+            interactionManager.SelectExit(leftHand.GetComponent<IXRSelectInteractor>(), pouchInteractor.GetComponent<IXRSelectInteractable>());
+            interactionManager.SelectEnter(leftHand.GetComponent<IXRSelectInteractor>(), copy.GetComponent<XRGrabInteractable>().GetComponent<IXRSelectInteractable>());
         }  
         else if (rightHand.IsSelecting(pouchInteractor)) {
             copy = Instantiate(original, rightHand.transform.position, rightHand.transform.rotation);
-            interactionManager.SelectExit(rightHand, pouchInteractor);
-            interactionManager.SelectEnter(rightHand, copy.GetComponent<XRGrabInteractable>());
+            interactionManager.SelectExit(rightHand.GetComponent<IXRSelectInteractor>(), pouchInteractor.GetComponent<IXRSelectInteractable>());
+            interactionManager.SelectEnter(rightHand.GetComponent<IXRSelectInteractor>(), copy.GetComponent<XRGrabInteractable>().GetComponent<IXRSelectInteractable>());
         }
     }
 }

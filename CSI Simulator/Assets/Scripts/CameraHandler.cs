@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using System.Linq;
 
 public class CameraHandler : MonoBehaviour
@@ -9,24 +10,33 @@ public class CameraHandler : MonoBehaviour
     private bool takeScreenshot;
     //private int photoCount;
     private List<GameObject> photoTargets;
+    private List<GameObject> fingerprints;
     public GameObject pouch;
     public GameObject swabPouch;
+    public int phase;
     
     void Start()
     {
         //photoCount = 0;
+        phase = 1;
+
         GameObject[] photoEvidence = GameObject.FindGameObjectsWithTag("PhotoEvidence");
         GameObject[] evidence = GameObject.FindGameObjectsWithTag("Evidence");
         GameObject[] targets = photoEvidence.Concat(evidence).ToArray();
         photoTargets = new List<GameObject>(targets);
+
+        fingerprints = new List<GameObject>(GameObject.FindGameObjectsWithTag("Fingerprint"));
+        
+        RenderPipelineManager.endCameraRendering += CheckPicture;
     }
 
     void Awake() {
         myCamera = gameObject.GetComponent<Camera>();
     }
 
-    void OnPostRender() {
+    void CheckPicture(ScriptableRenderContext context, Camera camera) {
         if (takeScreenshot) {
+            print("picture started");
             takeScreenshot = false;
             
             /*
@@ -44,39 +54,76 @@ public class CameraHandler : MonoBehaviour
             GameObject currentTarget = null;
             float currentDistance = 2000f;
 
-            foreach (GameObject target in photoTargets) {
+            if (phase == 1) {
 
-                if(target.GetComponent<IsVisible>().CheckVisible()) {
+                foreach (GameObject target in photoTargets) {
 
-                    float dist = Vector3.Distance(gameObject.transform.position, target.transform.position);
+                    if(target.GetComponent<IsVisible>().CheckVisible()) {
 
-                    if (dist < currentDistance) {
-                        currentDistance = dist;
-                        Vector3 targetDir = target.transform.position - gameObject.transform.position;
+                        float dist = Vector3.Distance(gameObject.transform.position, target.transform.position);
 
-                        Physics.Raycast(gameObject.transform.position, targetDir, out RaycastHit hit);
+                        if (dist < currentDistance) {
+                            currentDistance = dist;
+                            Vector3 targetDir = target.transform.position - gameObject.transform.position;
 
-                        if (hit.collider.gameObject.name == target.name) {
-                            float targetAngle = Vector3.Angle(gameObject.transform.forward, targetDir);
+                            Physics.Raycast(gameObject.transform.position, targetDir, out RaycastHit hit);
 
-                            if (targetAngle < 35.0f)
-                                currentTarget = target;
+                            if (hit.collider.gameObject.name == target.name) {
+                                float targetAngle = Vector3.Angle(gameObject.transform.forward, targetDir);
+
+                                if (targetAngle < 35.0f)
+                                    currentTarget = target;
+                            }
                         }
                     }
                 }
-            }
 
-            if (currentTarget == null) {
-                Debug.Log("No valid target");
-            } else {
-                Debug.Log("Photo of " + currentTarget.name + " taken!");
-                photoTargets.Remove(currentTarget);
-                if (photoTargets.Count == 0) {
-                    Debug.Log("All Photos taken");
-                    pouch.SetActive(true);
-                    swabPouch.SetActive(true);
+                if (currentTarget == null) {
+                    Debug.Log("No valid target");
+                } else {
+                    Debug.Log("Photo of " + currentTarget.name + " taken!");
+                    photoTargets.Remove(currentTarget);
+                    if (photoTargets.Count == 0) {
+                        Debug.Log("All Photos taken");
+                        pouch.SetActive(true);
+                        swabPouch.SetActive(true);
+                    }
+                }
+            } else if (phase == 2) {
+
+                 foreach (GameObject target in fingerprints) {
+
+                    if (target.GetComponent<Fingerprint>().isFound) {
+
+                        float dist = Vector3.Distance(gameObject.transform.position, target.transform.position);
+
+                        if (dist < currentDistance) {
+                            currentDistance = dist;
+                            Vector3 targetDir = target.transform.position - gameObject.transform.position;
+
+                            Physics.Raycast(gameObject.transform.position, targetDir, out RaycastHit hit);
+
+                            if (hit.collider.gameObject.name == target.name) {
+                                float targetAngle = Vector3.Angle(gameObject.transform.forward, targetDir);
+
+                                if (targetAngle < 35.0f)
+                                    currentTarget = target;
+                            }
+                        }
+                    } 
+                }
+
+                if (currentTarget == null) {
+                    Debug.Log("No valid target");
+                } else {
+                    Debug.Log("Photo of " + currentTarget.name + " taken!");
+                    fingerprints.Remove(currentTarget);
+                    if (fingerprints.Count == 0) {
+                        Debug.Log("All fingerprints gathered");
+                    }
                 }
             }
+            
         }
     }
 

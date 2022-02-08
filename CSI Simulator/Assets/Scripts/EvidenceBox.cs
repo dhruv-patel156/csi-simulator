@@ -8,6 +8,7 @@ public class EvidenceBox : MonoBehaviour
     private List<GameObject> boxTargets;
     public GameObject brush;
     public GameObject brushSocket;
+    public CameraHandler cameraHandler;
 
     void Start()
     {
@@ -31,6 +32,7 @@ public class EvidenceBox : MonoBehaviour
                     brush.SetActive(true);
                     brushSocket.SetActive(true);
                     brush.transform.position = brushSocket.transform.position;
+                    cameraHandler.phase = 2;
                 }
             }
         }
