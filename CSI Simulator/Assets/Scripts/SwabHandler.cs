@@ -21,7 +21,7 @@ public class SwabHandler : MonoBehaviour
             if (collidingObject.gameObject.tag == "SwabEvidence") {
                 if (swabbedEvidence == null) {
                     swabbedEvidence = collidingObject.gameObject;
-                    gameObject.transform.Find("Brush").gameObject.GetComponent<MeshRenderer>().material = swabbedEvidence.GetComponent<MeshRenderer>().material;
+                    gameObject.transform.Find("Brush").gameObject.GetComponent<MeshRenderer>().material = swabbedEvidence.GetComponent<SwabMaterial>().swabMaterial;
 
                     gameObject.GetComponent<XRGrabInteractable>().interactionLayers = InteractionLayerMask.GetMask("Default", "Evidence");
                 } else {

@@ -8,6 +8,7 @@ public class EvidenceBox : MonoBehaviour
     private List<GameObject> boxTargets;
     public GameObject brush;
     public GameObject brushSocket;
+    public GameObject laptop;
     public CameraHandler cameraHandler;
 
     void Start()
@@ -31,6 +32,8 @@ public class EvidenceBox : MonoBehaviour
                     Debug.Log("All evidence stored!");
                     brush.SetActive(true);
                     brushSocket.SetActive(true);
+                    laptop.transform.Find("LaptopKeyboard").gameObject.SetActive(true);
+                    laptop.transform.Find("LaptopScreen").gameObject.SetActive(true);
                     brush.transform.position = brushSocket.transform.position;
                     cameraHandler.phase = 2;
                 }

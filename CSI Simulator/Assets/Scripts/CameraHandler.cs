@@ -58,8 +58,8 @@ public class CameraHandler : MonoBehaviour
 
                 foreach (GameObject target in photoTargets) {
 
-                    if(target.GetComponent<IsVisible>().CheckVisible()) {
-
+                    if (target.GetComponent<IsVisible>().CheckVisible()) {
+                        
                         float dist = Vector3.Distance(gameObject.transform.position, target.transform.position);
 
                         if (dist < currentDistance) {
@@ -67,8 +67,9 @@ public class CameraHandler : MonoBehaviour
                             Vector3 targetDir = target.transform.position - gameObject.transform.position;
 
                             Physics.Raycast(gameObject.transform.position, targetDir, out RaycastHit hit);
+                            print(hit.collider.gameObject.name);
 
-                            if (hit.collider.gameObject.name == target.name) {
+                            if (hit.collider.gameObject == target) {
                                 float targetAngle = Vector3.Angle(gameObject.transform.forward, targetDir);
 
                                 if (targetAngle < 35.0f)
@@ -76,6 +77,7 @@ public class CameraHandler : MonoBehaviour
                             }
                         }
                     }
+                    
                 }
 
                 if (currentTarget == null) {
