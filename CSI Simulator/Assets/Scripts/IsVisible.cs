@@ -19,16 +19,20 @@ public class IsVisible : MonoBehaviour
     public bool CheckVisible() {
 
         Renderer objRenderer;
-        
-        if (gameObject.name == "Victim") {
-            objRenderer = gameObject.transform.Find("Body/Geo/Suit").GetComponent<Renderer>();
-        } else {
-            objRenderer = GetComponent<Renderer>();
-        }
 
-        if (objRenderer.isVisible)
+        if (gameObject.tag == "SwabEvidence") {
             return true;
-        else
-            return false;
+        } else {
+            if (gameObject.name == "Victim") {
+            objRenderer = gameObject.transform.Find("Body/Geo/Suit").GetComponent<Renderer>();
+            } else {
+                objRenderer = GetComponent<Renderer>();
+            }
+
+            if (objRenderer.isVisible)
+                return true;
+            else
+                return false;
+        }  
     }
 }

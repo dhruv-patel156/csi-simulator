@@ -12,6 +12,9 @@ TagManager:
   - Swab
   - Surface
   - Fingerprint
+  - RoomCorner
+  - CornerMarker
+  - TeleportMarker
   layers:
   - Default
   - TransparentFX
@@ -21,7 +24,7 @@ TagManager:
   - UI
   - Camera Colliders
   - Brush
-  - 
+  - Feet
   - 
   - 
   - 

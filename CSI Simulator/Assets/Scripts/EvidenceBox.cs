@@ -13,10 +13,9 @@ public class EvidenceBox : MonoBehaviour
 
     void Start()
     {
-        GameObject[] physicalEvidence = GameObject.FindGameObjectsWithTag("PhysicalEvidence");
         GameObject[] swabEvidence = GameObject.FindGameObjectsWithTag("SwabEvidence");
         GameObject[] evidence = GameObject.FindGameObjectsWithTag("Evidence");
-        GameObject[] targets = physicalEvidence.Concat(swabEvidence).ToArray().Concat(evidence).ToArray();
+        GameObject[] targets = swabEvidence.Concat(evidence).ToArray();
         boxTargets = new List<GameObject>(targets);
     }
 
@@ -35,7 +34,7 @@ public class EvidenceBox : MonoBehaviour
                     laptop.transform.Find("LaptopKeyboard").gameObject.SetActive(true);
                     laptop.transform.Find("LaptopScreen").gameObject.SetActive(true);
                     brush.transform.position = brushSocket.transform.position;
-                    cameraHandler.phase = 2;
+                    cameraHandler.phase = 3;
                 }
             }
         }

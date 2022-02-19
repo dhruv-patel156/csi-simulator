@@ -9,20 +9,28 @@ public class CameraHandler : MonoBehaviour
     private Camera myCamera;
     private bool takeScreenshot;
     //private int photoCount;
+    private List<GameObject> roomCorners;
     private List<GameObject> photoTargets;
     private List<GameObject> fingerprints;
     public GameObject pouch;
     public GameObject swabPouch;
+    public GameObject button;
+    public GameObject board;
+    public GameObject screen4;
     public int phase;
+    public GameObject currentMarker;
     
     void Start()
     {
-        //photoCount = 0;
         phase = 1;
 
+        roomCorners = new List<GameObject>(GameObject.FindGameObjectsWithTag("RoomCorner"));
+        currentMarker = null;
+
         GameObject[] photoEvidence = GameObject.FindGameObjectsWithTag("PhotoEvidence");
+        GameObject[] swabEvidence = GameObject.FindGameObjectsWithTag("SwabEvidence");
         GameObject[] evidence = GameObject.FindGameObjectsWithTag("Evidence");
-        GameObject[] targets = photoEvidence.Concat(evidence).ToArray();
+        GameObject[] targets = photoEvidence.Concat(swabEvidence).ToArray().Concat(evidence).ToArray();
         photoTargets = new List<GameObject>(targets);
 
         fingerprints = new List<GameObject>(GameObject.FindGameObjectsWithTag("Fingerprint"));
@@ -30,7 +38,8 @@ public class CameraHandler : MonoBehaviour
         RenderPipelineManager.endCameraRendering += CheckPicture;
     }
 
-    void Awake() {
+    void Awake() 
+    {
         myCamera = gameObject.GetComponent<Camera>();
     }
 
@@ -54,7 +63,40 @@ public class CameraHandler : MonoBehaviour
             GameObject currentTarget = null;
             float currentDistance = 2000f;
 
+
             if (phase == 1) {
+
+                foreach (GameObject target in roomCorners) {
+
+                    if (target.GetComponent<CornerMarker>().marker == currentMarker) {
+
+                        Vector3 targetDir = target.transform.position - gameObject.transform.position;
+
+                        Physics.Raycast(gameObject.transform.position, targetDir, out RaycastHit hit);
+
+                        if (hit.collider.gameObject == target) {
+                            float targetAngle = Vector3.Angle(gameObject.transform.forward, targetDir);
+
+                            if (targetAngle < 35.0f)
+                                currentTarget = target;
+                        }
+                    }
+                }
+
+                if (currentTarget == null) {
+                    Debug.Log("No valid target");
+                } else {
+                    Debug.Log("Photo of " + currentTarget.name + " taken!");
+                    roomCorners.Remove(currentTarget);
+                    currentMarker.SetActive(false);
+                    currentMarker = null;
+                    if (roomCorners.Count == 0) {
+                        Debug.Log("All room photos taken");
+                        phase = 2;
+                    }
+                }
+
+            } else if (phase == 2) {
 
                 foreach (GameObject target in photoTargets) {
 
@@ -67,7 +109,6 @@ public class CameraHandler : MonoBehaviour
                             Vector3 targetDir = target.transform.position - gameObject.transform.position;
 
                             Physics.Raycast(gameObject.transform.position, targetDir, out RaycastHit hit);
-                            print(hit.collider.gameObject.name);
 
                             if (hit.collider.gameObject == target) {
                                 float targetAngle = Vector3.Angle(gameObject.transform.forward, targetDir);
@@ -89,9 +130,12 @@ public class CameraHandler : MonoBehaviour
                         Debug.Log("All Photos taken");
                         pouch.SetActive(true);
                         swabPouch.SetActive(true);
+                        button.SetActive(true);
+                        board.GetComponent<BoardMenuHandler>().SetActiveScreen(screen4);
                     }
                 }
-            } else if (phase == 2) {
+
+            } else if (phase == 3) {
 
                  foreach (GameObject target in fingerprints) {
 
