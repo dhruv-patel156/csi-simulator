@@ -1,19 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class CameraLaunch : MonoBehaviour
 {
     public Transform socket;
-    // Start is called before the first frame update
+
     void Start()
     {
-        gameObject.transform.position = socket.position;
+        StartCoroutine(WaitForLoad());
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator WaitForLoad()
     {
-        
+        yield return new WaitForSeconds(0.1f);
+
+        gameObject.transform.position = socket.position;
     }
+    
 }
