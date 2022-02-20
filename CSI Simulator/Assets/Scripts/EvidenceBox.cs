@@ -5,35 +5,61 @@ using System.Linq;
 
 public class EvidenceBox : MonoBehaviour
 {
-    private List<GameObject> boxTargets;
+    private List<GameObject> swabEvidence;
+    private List<GameObject> evidence;
+    public GameObject swabPouch;
     public GameObject brush;
     public GameObject brushSocket;
     public GameObject laptop;
     public CameraHandler cameraHandler;
+    public BoardMenuHandler board;
+    public GameObject button4;
+    public GameObject button5;
+    public GameObject screen5;
+    public GameObject screen6;
+    private int phase;
 
     void Start()
     {
-        GameObject[] swabEvidence = GameObject.FindGameObjectsWithTag("SwabEvidence");
-        GameObject[] evidence = GameObject.FindGameObjectsWithTag("Evidence");
-        GameObject[] targets = swabEvidence.Concat(evidence).ToArray();
-        boxTargets = new List<GameObject>(targets);
+        phase = 1;
+        swabEvidence = new List<GameObject>(GameObject.FindGameObjectsWithTag("SwabEvidence"));
+        evidence = new List<GameObject>(GameObject.FindGameObjectsWithTag("Evidence"));
     }
 
     void OnTriggerEnter(Collider collidingObject)
     {
         if (collidingObject.gameObject.tag == "EvidenceBag") {
+
             GameObject storedEvidence = collidingObject.gameObject.GetComponent<EvidenceHandler>().storedEvidence;
+
             if (storedEvidence != null) {
+
                 Debug.Log(storedEvidence.name + " has been stored!");
-                boxTargets.Remove(storedEvidence);
+
+                if (phase == 1)
+                    evidence.Remove(storedEvidence);
+                else if (phase == 2)
+                    swabEvidence.Remove(storedEvidence);
+
                 collidingObject.gameObject.SetActive(false);
-                if (boxTargets.Count == 0) {
+
+                if (evidence.Count == 0) {
                     Debug.Log("All evidence stored!");
+                    swabPouch.SetActive(true);
+                    button4.SetActive(true);
+                    board.SetActiveScreen(screen5);
+                    phase = 2;
+                }
+
+                if (swabEvidence.Count == 0) {
+                    Debug.Log("All swab evidence stored!");
                     brush.SetActive(true);
                     brushSocket.SetActive(true);
                     laptop.transform.Find("LaptopKeyboard").gameObject.SetActive(true);
                     laptop.transform.Find("LaptopScreen").gameObject.SetActive(true);
                     brush.transform.position = brushSocket.transform.position;
+                    button5.SetActive(true);
+                    board.SetActiveScreen(screen6);
                     cameraHandler.phase = 3;
                 }
             }

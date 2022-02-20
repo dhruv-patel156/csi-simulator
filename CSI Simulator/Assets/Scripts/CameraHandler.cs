@@ -13,10 +13,13 @@ public class CameraHandler : MonoBehaviour
     private List<GameObject> photoTargets;
     private List<GameObject> fingerprints;
     public GameObject pouch;
-    public GameObject swabPouch;
-    public GameObject button;
-    public GameObject board;
+    public GameObject button2;
+    public GameObject button3;
+    public GameObject button6;
+    public BoardMenuHandler board;
+    public GameObject screen3;
     public GameObject screen4;
+    public GameObject screen7;
     public int phase;
     public GameObject currentMarker;
     
@@ -93,6 +96,8 @@ public class CameraHandler : MonoBehaviour
                     if (roomCorners.Count == 0) {
                         Debug.Log("All room photos taken");
                         phase = 2;
+                        button2.SetActive(true);
+                        board.SetActiveScreen(screen3);
                     }
                 }
 
@@ -129,9 +134,8 @@ public class CameraHandler : MonoBehaviour
                     if (photoTargets.Count == 0) {
                         Debug.Log("All Photos taken");
                         pouch.SetActive(true);
-                        swabPouch.SetActive(true);
-                        button.SetActive(true);
-                        board.GetComponent<BoardMenuHandler>().SetActiveScreen(screen4);
+                        button3.SetActive(true);
+                        board.SetActiveScreen(screen4);
                     }
                 }
 
@@ -166,6 +170,8 @@ public class CameraHandler : MonoBehaviour
                     fingerprints.Remove(currentTarget);
                     if (fingerprints.Count == 0) {
                         Debug.Log("All fingerprints gathered");
+                        button6.SetActive(true);
+                        board.SetActiveScreen(screen7);
                     }
                 }
             }

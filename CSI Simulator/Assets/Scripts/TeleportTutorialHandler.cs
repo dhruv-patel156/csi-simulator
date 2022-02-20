@@ -13,6 +13,9 @@ public class TeleportTutorialHandler : MonoBehaviour
     public GameObject cornerMarker2;
     public GameObject cornerMarker3;
     public GameObject cornerMarker4;
+    public BoardMenuHandler board;
+    public GameObject screen2;
+    public GameObject button;
 
     void Start()
     {
@@ -36,6 +39,8 @@ public class TeleportTutorialHandler : MonoBehaviour
                 cornerMarker2.SetActive(true);
                 cornerMarker3.SetActive(true);
                 cornerMarker4.SetActive(true);
+                button.SetActive(true);
+                board.SetActiveScreen(screen2);
             }
         }
     }
