@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TeleportTutorialHandler : MonoBehaviour
 {
+    [SerializeField] private Animator hudAnimator;
+    [SerializeField] private AudioSource hudSound;
     private List<GameObject> markers;
     public GameObject currentMarker;
     public GameObject cameraTool;
@@ -41,6 +43,8 @@ public class TeleportTutorialHandler : MonoBehaviour
                 cornerMarker4.SetActive(true);
                 button.SetActive(true);
                 board.SetActiveScreen(screen2);
+                hudAnimator.Play("HUD1", 0);
+                hudSound.Play();
             }
         }
     }

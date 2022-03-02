@@ -32,8 +32,13 @@ public class HandController : MonoBehaviour
         maxGrip = Mathf.Max(controller.selectAction.action.ReadValue<float>(), controller.activateAction.action.ReadValue<float>());
         hand.SetGrip(maxGrip);
 
-        if (move.ReadValue<Vector2>() != Vector2.zero) isMoving = 1.0f;
-        else isMoving = 0.0f;
-        hand.SetPoint(isMoving);
+        if (maxGrip == 0.0) {
+            if (move.ReadValue<Vector2>() != Vector2.zero)
+                isMoving = 1.0f;
+            else
+                isMoving = 0.0f;
+            
+            hand.SetPoint(isMoving);
+        }
     }
 }

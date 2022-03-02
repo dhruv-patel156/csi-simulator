@@ -9,4 +9,15 @@ public class Fingerprint : MonoBehaviour
     {
         isFound = false;
     }
+
+    public bool InRange(float dist, out int error) {
+
+        if (dist > 0.15) {
+            error = 4;
+            return false;
+        } else {
+            error = 0;
+            return true;
+        }
+    }
 }

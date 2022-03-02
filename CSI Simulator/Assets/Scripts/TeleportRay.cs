@@ -9,8 +9,11 @@ public class TeleportRay : MonoBehaviour
 
     [SerializeField] private InputActionAsset actionAsset;
     [SerializeField] private XRRayInteractor lRayInteractor;
+    [SerializeField] private ActionBasedController lController;
     [SerializeField] private XRRayInteractor rRayInteractor;
+    [SerializeField] private ActionBasedController rController;
     [SerializeField] private TeleportationProvider provider;
+    private AudioSource teleportSound;
 
     public GameObject reticle;
     private InputAction lStick;
@@ -21,6 +24,8 @@ public class TeleportRay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        teleportSound = gameObject.GetComponent<AudioSource>();
+
         lRayInteractor.enabled = false;
         rRayInteractor.enabled = false;
 
@@ -75,6 +80,7 @@ public class TeleportRay : MonoBehaviour
             {
                 destinationPosition = lhitPos,
             };
+            teleportSound.Play();
             provider.QueueTeleportRequest(lrequest);
             rRayInteractor.enabled = false;
             lRayInteractor.enabled = false;
@@ -88,6 +94,7 @@ public class TeleportRay : MonoBehaviour
         {
             destinationPosition = rhitPos,
         };
+        teleportSound.Play();
         provider.QueueTeleportRequest(rrequest);
         lRayInteractor.enabled = false;
         rRayInteractor.enabled = false;
@@ -98,7 +105,7 @@ public class TeleportRay : MonoBehaviour
 
     private void OnLTeleportActivate(InputAction.CallbackContext context)
     {
-        if(!ractive)
+        if(!ractive && lController.selectAction.action.ReadValue<float>() == 0.0)
         {
             lRayInteractor.enabled = true;
             lactive = true;
@@ -108,7 +115,7 @@ public class TeleportRay : MonoBehaviour
 
     private void OnRTeleportActivate(InputAction.CallbackContext context)
     {
-        if(!lactive)
+        if(!lactive && rController.selectAction.action.ReadValue<float>() == 0.0)
         {
             rRayInteractor.enabled = true;
             ractive = true;
