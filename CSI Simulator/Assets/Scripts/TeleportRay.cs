@@ -10,8 +10,10 @@ public class TeleportRay : MonoBehaviour
     [SerializeField] private InputActionAsset actionAsset;
     [SerializeField] private XRRayInteractor lRayInteractor;
     [SerializeField] private ActionBasedController lController;
+    [SerializeField] private XRRayInteractor lMenuRay;
     [SerializeField] private XRRayInteractor rRayInteractor;
     [SerializeField] private ActionBasedController rController;
+    [SerializeField] private XRRayInteractor rMenuRay;
     [SerializeField] private TeleportationProvider provider;
     private AudioSource teleportSound;
 
@@ -28,6 +30,9 @@ public class TeleportRay : MonoBehaviour
 
         lRayInteractor.enabled = false;
         rRayInteractor.enabled = false;
+
+        lMenuRay.enabled = true;
+        rMenuRay.enabled = true;
 
         var lActivate = actionAsset.FindActionMap("XRI LeftHand").FindAction("Teleport Mode Activate");
         lActivate.Enable();
@@ -68,6 +73,8 @@ public class TeleportRay : MonoBehaviour
         {
             lRayInteractor.enabled = false;
             rRayInteractor.enabled = false;
+            lMenuRay.enabled = true;
+            rMenuRay.enabled = true;
             lactive = false;
             ractive = false;
             reticle.SetActive(false);
@@ -84,6 +91,8 @@ public class TeleportRay : MonoBehaviour
             provider.QueueTeleportRequest(lrequest);
             rRayInteractor.enabled = false;
             lRayInteractor.enabled = false;
+            lMenuRay.enabled = true;
+            rMenuRay.enabled = true;
             lactive = false;
             ractive = false;
             reticle.SetActive(false);
@@ -98,6 +107,8 @@ public class TeleportRay : MonoBehaviour
         provider.QueueTeleportRequest(rrequest);
         lRayInteractor.enabled = false;
         rRayInteractor.enabled = false;
+        lMenuRay.enabled = true;
+        rMenuRay.enabled = true;
         lactive = false;
         ractive = false;
         reticle.SetActive(false);
@@ -108,6 +119,7 @@ public class TeleportRay : MonoBehaviour
         if(!ractive && lController.selectAction.action.ReadValue<float>() == 0.0)
         {
             lRayInteractor.enabled = true;
+            lMenuRay.enabled = false;
             lactive = true;
             reticle.SetActive(true);
         }  
@@ -118,6 +130,7 @@ public class TeleportRay : MonoBehaviour
         if(!lactive && rController.selectAction.action.ReadValue<float>() == 0.0)
         {
             rRayInteractor.enabled = true;
+            rMenuRay.enabled = false;
             ractive = true;
             reticle.SetActive(true);
         }  
@@ -127,6 +140,8 @@ public class TeleportRay : MonoBehaviour
     {
         lRayInteractor.enabled = false;
         rRayInteractor.enabled = false;
+        lMenuRay.enabled = true;
+        rMenuRay.enabled = true;
         lactive = false;
         ractive = false;
         reticle.SetActive(false);
