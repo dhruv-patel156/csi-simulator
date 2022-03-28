@@ -10,17 +10,6 @@ public class PouchHandler : MonoBehaviour
     [SerializeField] private XRDirectInteractor rightHand;
     [SerializeField] private XRSimpleInteractable pouchInteractor;
     [SerializeField] private GameObject original;
-    // Start is called before the first frame update
-    void Start()
-    {
-        gameObject.SetActive(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void CreateBag()
     {
