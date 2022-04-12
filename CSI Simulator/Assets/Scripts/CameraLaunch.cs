@@ -8,12 +8,12 @@ public class CameraLaunch : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameObject.transform.position = socket.position;
+        StartCam();
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator StartCam()
     {
-        
+        yield return new WaitForSeconds(0.1f);
+        gameObject.transform.position = socket.position;
     }
 }
